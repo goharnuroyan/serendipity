@@ -235,6 +235,30 @@ html{-webkit-text-size-adjust:100%}
   .nav-links a{font-size:.62rem;letter-spacing:1px}
 }
 @media(hover:none){.nav-arrow:hover:not(:disabled){background:rgba(10,10,10,.92);color:var(--white)}}
+/* collage + photo framing */
+.pg img.ph,.mosaic img{object-position:50% 20%}
+/* mobile menu */
+.menu-btn{display:none;background:none;border:0;width:44px;height:44px;padding:0;cursor:pointer;position:relative;color:var(--white)}
+.menu-btn span{position:absolute;left:9px;right:9px;height:1.5px;background:currentColor;transition:transform .35s,top .35s}
+.menu-btn span:first-child{top:16px}.menu-btn span:last-child{top:26px}
+html.menu-open .menu-btn span:first-child{top:21px;transform:rotate(45deg)}
+html.menu-open .menu-btn span:last-child{top:21px;transform:rotate(-45deg)}
+.menu{position:fixed;inset:0;z-index:900;background:var(--black);display:flex;flex-direction:column;justify-content:center;padding:6rem 2rem 3rem;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+html.menu-open .menu{opacity:1;visibility:visible}
+html.menu-open{overflow:hidden}
+.menu ul{list-style:none;border-top:1px solid rgba(245,245,245,.18)}
+.menu li{border-bottom:1px solid rgba(245,245,245,.18)}
+.menu a{display:block;padding:1.1rem 0;color:var(--white);text-decoration:none;font-size:clamp(2.2rem,11vw,3.4rem);font-weight:300;letter-spacing:-1px;line-height:1}
+.menu a:hover,.menu a:focus-visible{color:var(--burgundy-light)}
+.menu p{margin-top:2rem;font-family:'Dancing Script',cursive;font-size:1.8rem;color:var(--burgundy-light)}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .menu-btn{display:block}
+  nav{padding:.6rem 1rem .6rem 1.5rem}
+  .logo{font-size:1.7rem}
+  .pg.img,.pg.up{height:min(560px,125vw)}
+}
+@media(min-width:769px){.menu{display:none}}
 </style>
 </head>
 <body>
@@ -244,7 +268,17 @@ html{-webkit-text-size-adjust:100%}
 <nav>
   <div class="logo">Serendipity</div>
   <ul class="nav-links"><li><a href="#about">About</a></li><li><a href="#models">Models</a></li><li><a href="#contact">Contact</a></li><li><a href="#apply">Apply</a></li></ul>
+  <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
 </nav>
+<div class="menu" id="menu" aria-hidden="true">
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#models">Models</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#apply">Apply</a></li>
+  </ul>
+  <p>Serendipity</p>
+</div>
 
 <section class="hero">
   <div class="hero-content">
@@ -378,11 +412,11 @@ const M=[
 ["Amara Okafor","1517841905240-472988babdf9",182,"Bust",85,65,91,41,"Black","Brown","Elegance is when the inside is as beautiful as the outside.","Amara commands a room before she has said a word. Her work spans couture runway, beauty and portrait editorials."]
 ];
 const roman=n=>['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV'][n]||n;
-const N=M.length,cols=Math.ceil(Math.sqrt(N));
+const N=M.length,cols=Math.ceil(Math.sqrt(N)),rows=Math.ceil(N/cols);
 
 /* spread 0 = cover (collage of every model + contents). spread k = model k: photo left, text right. */
 const L=(i,c='')=>{
-  if(i===0)return `<div class="pg img ${c}"><div class="mosaic" style="grid-template-columns:repeat(${cols},1fr)">${M.map(m=>`<img src="${U(m[1])}" alt="${m[0]}">`).join('')}</div></div>`;
+  if(i===0)return `<div class="pg img ${c}"><div class="mosaic" style="grid-template-columns:repeat(${cols},minmax(0,1fr));grid-template-rows:repeat(${rows},minmax(0,1fr))">${M.map(m=>`<img src="${U(m[1])}" alt="${m[0]}">`).join('')}</div></div>`;
   const m=M[i-1];
   return `<div class="pg img ${c}"><img class="ph" src="${U(m[1])}" alt="${m[0]}"><span class="side">Serendipity &middot; The Collection</span><div class="cap"><b>${m[0]}</b><i>Autumn / Winter 2026</i></div><span class="num"><b>${2*i}</b></span></div>`;
 };
@@ -470,6 +504,16 @@ if(matchMedia('(hover:hover) and (pointer:fine)').matches){
     requestAnimationFrame(loop);
   })();
 }
+
+/* mobile menu */
+(function(){
+  const root=document.documentElement,btn=document.getElementById('menuBtn'),menu=document.getElementById('menu');
+  const set=o=>{root.classList.toggle('menu-open',o);btn.setAttribute('aria-expanded',o);menu.setAttribute('aria-hidden',!o)};
+  btn.addEventListener('click',()=>set(!root.classList.contains('menu-open')));
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>set(false)));
+  addEventListener('keydown',e=>{if(e.key==='Escape')set(false)});
+  addEventListener('resize',()=>{if(innerWidth>768)set(false)});
+})();
 
 /* hero parallax */
 const heroImages=document.querySelectorAll('.hero-img');
