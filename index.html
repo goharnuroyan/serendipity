@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serendipity | Luxury Model Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--black:#0a0a0a;--white:#f5f5f5;--paper:#f2ede6;--burgundy:#6b1a2e;--burgundy-light:#8b2a3e}
+html{scroll-behavior:smooth}
+body{font-family:'Cormorant Garamond',serif;background:var(--black);color:var(--white);overflow-x:hidden}
+
+/* cursor: dot + trailing circle */
+.cursor,.cursor-dot{position:fixed;left:0;top:0;pointer-events:none;z-index:9999;border-radius:50%;opacity:0;transition:opacity .3s}
+.cursor{width:34px;height:34px;margin:-17px 0 0 -17px;border:1.5px solid var(--burgundy-light);box-shadow:0 0 0 1px rgba(255,255,255,.45);transition:opacity .3s,transform .25s ease,background .25s ease}
+.cursor-dot{width:7px;height:7px;margin:-3.5px 0 0 -3.5px;background:var(--burgundy-light);box-shadow:0 0 0 1.5px #fff}
+html.cur-on .cursor,html.cur-on .cursor-dot{opacity:1}
+html.fine,html.fine *{cursor:none!important}
+@media(hover:none){.cursor,.cursor-dot{display:none}}
+
+nav{position:fixed;top:0;width:100%;padding:2rem 4rem;display:flex;justify-content:space-between;align-items:center;z-index:1000;mix-blend-mode:difference}
+.logo{font-family:'Dancing Script',cursive;font-size:2.5rem;font-weight:700;letter-spacing:2px}
+.nav-links{display:flex;gap:3rem;list-style:none}
+.nav-links a{color:var(--white);text-decoration:none;font-size:.9rem;letter-spacing:2px;text-transform:uppercase}
+
+.hero{height:100vh;position:relative;display:flex;align-items:center;overflow:hidden}
+.hero-content{position:relative;z-index:10;padding-left:8rem;max-width:600px}
+.hero-title{font-size:8rem;font-weight:300;line-height:.9;margin-bottom:2rem;letter-spacing:-3px}
+.hero-subtitle{font-family:'Dancing Script',cursive;font-size:2rem;color:var(--burgundy-light);margin-bottom:1rem}
+.hero-description{font-size:1.1rem;line-height:1.8;opacity:.8;max-width:400px}
+.hero-images{position:absolute;right:0;top:50%;transform:translateY(-50%);width:60%;height:80%}
+.hero-img{position:absolute;object-fit:cover;background:#222;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.hero-img-1{width:400px;height:550px;top:0;right:15%}
+.hero-img-2{width:350px;height:480px;bottom:0;right:0}
+.hero-img-3{width:300px;height:420px;top:20%;right:40%;opacity:.7}
+
+.section{padding:8rem 4rem;position:relative}
+.section-title{font-size:5rem;font-weight:300;margin-bottom:4rem;letter-spacing:-2px}
+.section-title span{font-family:'Dancing Script',cursive;color:var(--burgundy-light)}
+.about .section-title{margin-bottom:1.2rem}
+.about-intro{max-width:62ch;font-size:1.25rem;line-height:1.8;opacity:.9}
+.strip{margin:1.4rem -4rem;overflow:hidden;line-height:0}
+.track{display:flex;width:max-content;animation:strip 90s linear infinite}
+.track img{width:44px;height:58px;object-fit:cover;display:block;flex:none;background:#222}
+@keyframes strip{to{transform:translateX(-50%)}}
+.about-outro{columns:2;column-gap:4rem;max-width:1100px;font-size:1.2rem;line-height:1.9;opacity:.9}
+.about-outro p{break-inside:avoid;margin-bottom:1.2rem}
+
+/* ===== BOOK: sized to the window so the whole thing + controls fit on one screen ===== */
+.book-section{min-height:100vh;min-height:100dvh;padding:104px 2rem 20px;display:flex;flex-direction:column;align-items:center}
+.book-head{width:100%;max-width:1250px;display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:14px}
+.book-title{font-size:2.4rem;font-weight:300;letter-spacing:-1px;line-height:1}
+.book-title span{font-family:'Dancing Script',cursive;color:var(--burgundy-light)}
+.hint{font-size:.85rem;letter-spacing:2px;text-transform:uppercase;opacity:.55}
+.book-wrap{display:grid;grid-template-columns:auto auto auto;grid-template-areas:"prev spread next" ". counter .";gap:0 22px;align-items:center;justify-content:center;perspective:2600px}
+.spread{grid-area:spread;--u:1cqw;container-type:inline-size;width:max(600px,min(1150px,calc(100vw - 210px),calc((100dvh - 250px)*1.5)));aspect-ratio:1.5;display:grid;grid-template-columns:1fr 1fr;background:var(--paper);box-shadow:0 30px 80px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.08);position:relative;transform-style:preserve-3d;color:var(--black)}
+.spread::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:60px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,rgba(0,0,0,.1) 45%,rgba(0,0,0,.22) 50%,rgba(0,0,0,.1) 55%,transparent);pointer-events:none;z-index:5}
+.counter{grid-area:counter;text-align:center;margin-top:12px;font-size:.95rem;letter-spacing:2px;opacity:.7}
+#prev{grid-area:prev}#next{grid-area:next}
+.nav-arrow{background:none;border:1px solid var(--white);color:var(--white);width:56px;height:56px;font-size:1.4rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center}
+.nav-arrow:hover:not(:disabled){background:var(--white);color:var(--black)}
+.nav-arrow:disabled{opacity:.25}
+
+.pg{position:relative;overflow:hidden;background:var(--paper)}
+.pg.img{background:var(--black)}
+.pg img.ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#222}
+.pg.img::before{content:"";position:absolute;inset:auto 0 0 0;height:32%;background:linear-gradient(to top,rgba(0,0,0,.75),transparent);z-index:1}
+.cap{position:absolute;left:8%;bottom:9%;z-index:2;color:#fff}
+.cap b{display:block;font-weight:400;font-size:max(15px,calc(var(--u)*2));letter-spacing:.02em}
+.cap i{font-size:max(11px,calc(var(--u)*1.2));opacity:.75;letter-spacing:2px;text-transform:uppercase;font-style:normal}
+.side{position:absolute;z-index:2;top:6%;left:5%;writing-mode:vertical-rl;color:#fff;opacity:.85;font-size:max(10px,calc(var(--u)*1.05));letter-spacing:3px;text-transform:uppercase}
+.mosaic{position:absolute;inset:0;display:grid;gap:3px;background:var(--black)}
+.mosaic img{width:100%;height:100%;min-height:0;object-fit:cover;background:#222}
+.num{position:absolute;bottom:4.5%;z-index:2;font-size:max(11px,calc(var(--u)*1.2));letter-spacing:2px}
+.num b{font-weight:600;font-size:1.3em;margin-right:.6em}
+.pg.img .num{right:6%;color:#fff}
+.pg.txt .num{right:8%;color:var(--burgundy)}
+.pg.txt .num.l{left:8%;right:auto}
+
+.txt{padding:6.5% 9% 10% 10%;display:flex;flex-direction:column}
+.run{display:flex;justify-content:space-between;font-size:max(10px,calc(var(--u)*1.05));letter-spacing:2.5px;text-transform:uppercase;color:var(--burgundy);border-bottom:1px solid var(--black);padding-bottom:.7em}
+.nm{margin-top:4%;line-height:.95}
+.nm .a{display:block;font-size:calc(var(--u)*6.4);font-weight:300;letter-spacing:-.02em}
+.nm .b{display:block;font-family:'Dancing Script',cursive;font-weight:700;font-size:calc(var(--u)*4.6);color:var(--burgundy);margin-top:.05em}
+.bio{margin-top:3%;font-size:max(13px,calc(var(--u)*1.7));line-height:1.55;color:#3b3536}
+.bio::first-letter{font-size:3.3em;float:left;line-height:.8;padding:.06em .1em 0 0;color:var(--burgundy);font-weight:600}
+.pull{margin-top:3%;font-style:italic;font-weight:300;font-size:calc(var(--u)*2.15);line-height:1.25;color:var(--burgundy);border-left:2px solid var(--burgundy);padding-left:1em}
+.facts{margin-top:auto;border-top:1px solid var(--black);padding-top:.8em}
+.big{display:grid;grid-template-columns:repeat(4,1fr);text-align:left}
+.big div{font-size:calc(var(--u)*3.2);font-weight:300;line-height:1}
+.big small{display:block;font-size:max(9px,calc(var(--u)*.95));letter-spacing:2.5px;text-transform:uppercase;color:var(--burgundy);margin-top:.5em;font-weight:600}
+.small{margin-top:.9em;display:flex;gap:1.6em;font-size:max(11px,calc(var(--u)*1.25));color:#3b3536}
+.small span{color:var(--burgundy);letter-spacing:2px;text-transform:uppercase;font-size:.8em;margin-right:.4em}
+
+.pg.cov{background:var(--burgundy);color:var(--white);padding:6.5% 9% 10% 10%;display:flex;flex-direction:column}
+.cov .run{color:#fff;border-color:rgba(255,255,255,.5)}
+.cov h3{margin-top:5%;font-weight:300;font-size:calc(var(--u)*5.4);letter-spacing:.14em;text-transform:uppercase;line-height:1}
+.cov .sc{font-family:'Dancing Script',cursive;font-size:calc(var(--u)*4);line-height:1.1;margin-top:.1em}
+.cov .in{margin-top:auto;font-size:max(10px,calc(var(--u)*1.05));letter-spacing:3px;text-transform:uppercase;opacity:.75;border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:.6em}
+.toc{list-style:none;margin-top:.5em}
+.toc button{all:unset;box-sizing:border-box;display:flex;width:100%;align-items:baseline;gap:.7em;padding:.3em 0;color:inherit;font-size:max(13px,calc(var(--u)*1.6))}
+.toc button:hover{opacity:.7}
+.toc button:focus-visible{outline:1px solid #fff;outline-offset:2px}
+.toc .r{width:2.6em;opacity:.6;font-style:italic}
+.toc .d{flex:1;border-bottom:1px dotted rgba(255,255,255,.4)}
+
+.flap{position:absolute;top:0;width:50%;height:100%;z-index:10;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.6,.05,.25,1)}
+.flap.r{right:0;transform-origin:left center}
+.flap.l{left:0;transform-origin:right center}
+.flap>.pg{position:absolute;inset:0;backface-visibility:hidden}
+.flap>.back{transform:rotateY(180deg)}
+.flap.r.go{transform:rotateY(-180deg)}
+.flap.l.go{transform:rotateY(180deg)}
+
+/* contact / hire */
+.contact{min-height:100vh;min-height:100dvh;padding:104px 4rem 48px;display:grid;grid-template-columns:.8fr 1.2fr;gap:6vw;align-items:center;border-top:1px solid rgba(245,245,245,.1)}
+.contact h2{font-size:clamp(3rem,5vw,4.6rem);font-weight:300;letter-spacing:-2px;line-height:1;margin-bottom:1.2rem}
+.contact h2 span{font-family:'Dancing Script',cursive;color:var(--burgundy-light)}
+.contact .lead{font-size:1.2rem;line-height:1.8;opacity:.85;max-width:38ch}
+.desk{margin-top:2rem;list-style:none;border-top:1px solid rgba(245,245,245,.18)}
+.desk li{display:flex;justify-content:space-between;gap:1rem;padding:.8rem 0;border-bottom:1px solid rgba(245,245,245,.18);font-size:1.1rem}
+.desk span{opacity:.6;font-style:italic}
+.desk a{color:inherit;text-decoration:none}
+.hire{display:grid;gap:1.1rem}
+.lbl{font-size:.85rem;letter-spacing:2px;text-transform:uppercase;opacity:.6}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:.5rem}
+.chip{position:relative;display:flex;align-items:center;gap:9px;padding-right:12px;border:1px solid rgba(245,245,245,.25);cursor:pointer;font-size:.95rem;transition:background .25s,border-color .25s}
+.chip input{position:absolute;inset:0;opacity:0;margin:0}
+.chip img{width:28px;height:34px;object-fit:cover;display:block;background:#222}
+.chip:hover{border-color:rgba(245,245,245,.6)}
+.chip:has(input:checked){background:var(--burgundy);border-color:var(--burgundy-light)}
+.chip:focus-within{outline:2px solid #fff;outline-offset:2px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem 2rem}
+.cf{display:flex;flex-direction:column;gap:2px}
+.cf label{font-style:italic;opacity:.65;font-size:.95rem}
+.cf input,.cf select,.cf textarea{background:none;border:0;border-bottom:1px solid rgba(245,245,245,.4);border-radius:0;color:var(--white);font:inherit;font-size:1.15rem;padding:.3rem 0;color-scheme:dark;width:100%}
+.cf textarea{resize:none}
+.cf select option{background:#111}
+.cf input:focus,.cf select:focus,.cf textarea:focus{outline:0;border-bottom-color:#fff;box-shadow:0 1px 0 var(--burgundy-light)}
+.hsend{justify-self:start;background:transparent;border:1px solid var(--white);color:var(--white);font:inherit;font-size:1rem;letter-spacing:3px;text-transform:uppercase;padding:.9rem 2.6rem;cursor:pointer;transition:all .3s}
+.hsend:hover{background:var(--white);color:var(--black)}
+.hnote{min-height:1.3em;font-style:italic;color:#d9a1b0}
+.apply-section{background:var(--burgundy);min-height:100vh;min-height:100dvh;padding:104px 2rem 20px;display:flex;flex-direction:column;align-items:center}
+.appwrap{width:max(600px,min(1150px,calc(100vw - 64px),calc((100dvh - 250px)*1.5)))}
+.appwrap .book-head{max-width:none}
+.appwrap .book-title span{color:#fff;opacity:.85}
+.spread.app{width:100%}
+.pg.up{display:block;background:#e9e2d9;cursor:pointer}
+.up .ask{position:absolute;inset:8%;border:1px dashed var(--burgundy);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.5em;color:var(--burgundy);padding:1em;transition:background .25s}
+.up .ask:hover,.up.drag .ask{background:rgba(107,26,46,.08)}
+.up .plus{font-size:calc(var(--u)*7);font-weight:300;line-height:1}
+.up .ask b{font-family:'Dancing Script',cursive;font-size:calc(var(--u)*3.2);font-weight:700;color:var(--black)}
+.up .ask small{font-size:max(11px,calc(var(--u)*1.15));letter-spacing:2px;text-transform:uppercase}
+.up.has .ask{display:none}
+.up.has::before{content:"";position:absolute;inset:auto 0 0 0;height:32%;background:linear-gradient(to top,rgba(0,0,0,.75),transparent);z-index:1}
+.up .chg{position:absolute;right:6%;top:5%;z-index:3;color:#fff;background:rgba(0,0,0,.5);padding:.5em .9em;font-size:max(10px,calc(var(--u)*1));letter-spacing:2px;text-transform:uppercase}
+.up img[hidden],.up .cap[hidden],.up .chg[hidden]{display:none}
+.pg.fm{padding:6.5% 9% 7% 10%;display:flex;flex-direction:column}
+.fm .nm{margin-top:3.5%;line-height:1}
+.fm .nm span{display:inline}
+.fm .nm .a{font-size:calc(var(--u)*4.6)}
+.fm .nm .b{font-size:calc(var(--u)*4);margin-left:.15em}
+.rows{margin-top:3.5%;display:flex;flex-direction:column;gap:calc(var(--u)*1.15)}
+.f{display:flex;align-items:flex-end;gap:.5em;font-size:max(13px,calc(var(--u)*1.6));min-width:0}
+.f label{color:var(--burgundy);white-space:nowrap}
+.f i{flex:1;min-width:.8em;height:0;border-bottom:1px dotted #8a7f7a}
+.f input{width:var(--w,4.5em);flex:none;min-width:0;background:none;border:0;border-bottom:1px solid var(--black);border-radius:0;font:inherit;color:var(--black);padding:0 .25em;-moz-appearance:textfield;appearance:textfield}
+.f input::-webkit-inner-spin-button,.f input::-webkit-outer-spin-button{-webkit-appearance:none}
+.f input:focus{outline:0;border-color:var(--burgundy);background:rgba(107,26,46,.07)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 2em}
+.send{margin-top:auto;align-self:flex-start;background:var(--burgundy);color:#fff;border:0;padding:.75em 1.8em;font:inherit;font-size:max(12px,calc(var(--u)*1.35));letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:background .3s}
+.send:hover{background:var(--black)}
+.note{min-height:1.4em;margin-top:.5em;color:var(--burgundy);font-style:italic;font-size:max(12px,calc(var(--u)*1.3))}
+footer{padding:5rem 4rem 3rem;text-align:center;border-top:1px solid rgba(245,245,245,.1)}
+.write{position:relative;display:inline-block;font-family:'Dancing Script',cursive;font-weight:700;font-size:clamp(4.5rem,15vw,13rem);line-height:1.15;padding:0 .15em;margin-bottom:1.5rem}
+.ink{display:block;--w:0%;-webkit-mask-image:linear-gradient(90deg,#000 calc(var(--w) - 6%),transparent var(--w));mask-image:linear-gradient(90deg,#000 calc(var(--w) - 6%),transparent var(--w))}
+.pen{position:absolute;left:0;top:0;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:var(--burgundy-light);box-shadow:0 0 12px rgba(139,42,62,.9);opacity:0;pointer-events:none}
+.footer-text{font-size:.9rem;opacity:.6;letter-spacing:2px}
+
+@media(max-width:980px){
+  .book-section{min-height:0;padding:96px 1.2rem 3rem}
+  .hint{display:none}
+  .book-wrap{grid-template-columns:auto 1fr auto;grid-template-areas:"spread spread spread" "prev counter next";width:100%;gap:14px 10px}
+  .spread{--u:clamp(7px,2.2cqw,9px);width:100%;display:block;aspect-ratio:auto}
+  .spread::after{display:none}
+  .pg.img{height:min(520px,70vw + 120px)}
+  .pg.txt,.pg.cov{min-height:560px}
+  .facts{margin-top:1.6rem}
+  .counter{margin:0}
+  .contact{grid-template-columns:1fr;padding:96px 1.5rem 4rem;gap:2.5rem}
+  .grid2{grid-template-columns:1fr}
+  .apply-section{min-height:0;padding:96px 1.2rem 3rem}
+  .appwrap{width:100%}
+  .pg.up{height:min(520px,70vw + 120px)}
+  .pg.fm{min-height:560px}
+  .two{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .hero-title{font-size:4rem}.hero-content{padding:2rem}
+  .hero-images{width:100%;opacity:.3}
+  .section-title{font-size:3rem}
+  .about-outro{columns:1}
+  nav{padding:1rem 2rem}.nav-links{gap:1.5rem}
+}
+@media(prefers-reduced-motion:reduce){.track{animation:none}.flap{transition-duration:.01s}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="cursor"></div>
+<div class="cursor-dot"></div>
+
+<nav>
+  <div class="logo">Serendipity</div>
+  <ul class="nav-links"><li><a href="#about">About</a></li><li><a href="#models">Models</a></li><li><a href="#contact">Contact</a></li><li><a href="#apply">Apply</a></li></ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-subtitle">Luxury Model Agency</div>
+    <h1 class="hero-title">Serendipity</h1>
+    <p class="hero-description">Where extraordinary faces meet unparalleled elegance. We represent the world's most captivating talents.</p>
+  </div>
+  <div class="hero-images">
+    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800" alt="Model" class="hero-img hero-img-1">
+    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800" alt="Model" class="hero-img hero-img-2">
+    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800" alt="Model" class="hero-img hero-img-3">
+  </div>
+</section>
+
+<section id="about" class="section about">
+  <h2 class="section-title">About <span>Serendipity</span></h2>
+  <p class="about-intro">Founded on the belief that true beauty is found in the unexpected, Serendipity has become the destination for brands seeking distinctive faces that captivate and inspire.</p>
+  <div class="strip" aria-hidden="true"><div class="track" id="track"></div></div>
+  <div class="about-outro">
+    <p>Our curated roster represents the pinnacle of fashion modeling, each talent selected not just for their striking features, but for their ability to tell stories through their presence.</p>
+    <p>We work with the world's most prestigious fashion houses, luxury brands, and visionary photographers to create imagery that transcends trends and defines eras.</p>
+  </div>
+</section>
+
+<section id="models" class="book-section">
+  <div class="book-head">
+    <h2 class="book-title">Our <span>Talents</span></h2>
+    <p class="hint">Click a page edge, use the arrows, or pick a name</p>
+  </div>
+  <div class="book-wrap">
+    <button class="nav-arrow" id="prev" aria-label="Previous page">&larr;</button>
+    <div class="spread" id="spread"></div>
+    <button class="nav-arrow" id="next" aria-label="Next page">&rarr;</button>
+    <div class="counter" id="counter" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div>
+    <h2>Hire a <span>Model</span></h2>
+    <p class="lead">Casting for a campaign, an editorial or a runway show? Choose the faces you have in mind and tell us about the project. Our booking desk replies within one working day.</p>
+    <ul class="desk">
+      <li><span>Bookings</span><a href="mailto:bookings@serendipity.example">bookings@serendipity.example</a></li>
+      <li><span>Phone</span><a href="tel:+37400000000">+374 00 000 000</a></li>
+      <li><span>Studio</span>Yerevan, Armenia</li>
+    </ul>
+  </div>
+  <form class="hire" id="hireForm">
+    <div><p class="lbl">Who would you like to book?</p><div class="chips" id="chips"></div></div>
+    <div class="grid2">
+      <div class="cf"><label for="hn">Your name</label><input id="hn" name="name" required autocomplete="name"></div>
+      <div class="cf"><label for="hc">Company or brand</label><input id="hc" name="company" autocomplete="organization"></div>
+      <div class="cf"><label for="he">Email</label><input id="he" name="email" type="email" required autocomplete="email"></div>
+      <div class="cf"><label for="hp">Phone</label><input id="hp" name="phone" type="tel" autocomplete="tel"></div>
+      <div class="cf"><label for="ht">Type of project</label><select id="ht" name="project"><option>Editorial</option><option>Campaign</option><option>Runway show</option><option>Lookbook</option><option>Fashion film</option><option>Event</option></select></div>
+      <div class="cf"><label for="hd">Shoot date</label><input id="hd" name="date" type="date"></div>
+    </div>
+    <div class="cf"><label for="hm">Tell us about the project</label><textarea id="hm" name="message" rows="3"></textarea></div>
+    <button class="hsend" type="submit">Send booking request</button>
+    <p class="hnote" id="hnote" role="status"></p>
+  </form>
+</section>
+
+<section id="apply" class="apply-section">
+  <div class="appwrap">
+    <div class="book-head">
+      <h2 class="book-title">Become a <span>Model</span></h2>
+      <p class="hint">Add a photograph, then fill in your details</p>
+    </div>
+    <form class="spread app" id="appForm">
+      <label class="pg up" id="drop">
+        <input type="file" name="photo" id="photo" accept="image/*" hidden>
+        <img class="ph" id="upImg" alt="Your photograph" hidden>
+        <div class="ask"><span class="plus">+</span><b>Click to add your photograph</b><small>Natural light &middot; no makeup &middot; no filters</small></div>
+        <span class="chg" id="chg" hidden>Change photo</span>
+        <div class="cap" id="upCap" hidden><b id="capName">Your name</b><i>Application &middot; Autumn / Winter 2026</i></div>
+      </label>
+      <div class="pg txt fm">
+        <div class="run"><span>Serendipity &middot; Application</span><span>Your book</span></div>
+        <h3 class="nm"><span class="a">Your</span><span class="b">details</span></h3>
+        <div class="rows">
+          <div class="f"><label for="fn">Full name</label><i></i><input id="fn" name="name" required autocomplete="name" style="--w:58%"></div>
+          <div class="f"><label for="em">Email</label><i></i><input id="em" name="email" type="email" required autocomplete="email" style="--w:58%"></div>
+          <div class="two">
+            <div class="f"><label for="ag">Age</label><i></i><input id="ag" name="age" type="number" min="16" max="60" inputmode="numeric" style="--w:3.5em"></div>
+            <div class="f"><label for="ci">City</label><i></i><input id="ci" name="city" autocomplete="address-level2" style="--w:6.5em"></div>
+          </div>
+          <div class="f"><label for="ig">Instagram</label><i></i><input id="ig" name="instagram" style="--w:58%"></div>
+          <div class="two">
+            <div class="f"><label for="ht">Height (cm)</label><i></i><input id="ht" name="height" type="number" min="140" max="220" inputmode="numeric" required></div>
+            <div class="f"><label for="bu">Bust / chest (cm)</label><i></i><input id="bu" name="bust_chest" type="number" inputmode="numeric"></div>
+          </div>
+          <div class="two">
+            <div class="f"><label for="wa">Waist (cm)</label><i></i><input id="wa" name="waist" type="number" inputmode="numeric"></div>
+            <div class="f"><label for="hp">Hips (cm)</label><i></i><input id="hp" name="hips" type="number" inputmode="numeric"></div>
+          </div>
+          <div class="two">
+            <div class="f"><label for="sh">Shoes (EU)</label><i></i><input id="sh" name="shoes" type="number" inputmode="numeric"></div>
+            <div class="f"><label for="ph">Phone</label><i></i><input id="ph" name="phone" type="tel" autocomplete="tel" style="--w:7em"></div>
+          </div>
+          <div class="two">
+            <div class="f"><label for="hr">Hair</label><i></i><input id="hr" name="hair" style="--w:6em"></div>
+            <div class="f"><label for="ey">Eyes</label><i></i><input id="ey" name="eyes" style="--w:6em"></div>
+          </div>
+        </div>
+        <button class="send" type="submit">Submit application</button>
+        <p class="note" id="note" role="status"></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer id="foot">
+  <div class="write" aria-label="Serendipity"><span class="ink" id="ink">Serendipity</span><i class="pen" id="pen"></i></div>
+  <p class="footer-text">&copy; 2026 SERENDIPITY MODEL AGENCY. ALL RIGHTS RESERVED.</p>
+</footer>
+
+<script>
+const U=id=>`https://images.unsplash.com/photo-${id}?w=800`;
+/* name, photo id, height, chest/bust label, chest, waist, hips, shoes, hair, eyes, quote, bio
+   To add a model, add one line. Cover collage, contents, pages and counter update automatically. */
+const M=[
+["Isabella Moreau","1534528741775-53994a69daeb",170,"Bust",82,62,88,39,"Brown","Green","Elegance is not about being noticed, it's about being remembered.","Discovered on a rainy afternoon in Lyon, Isabella brings a quiet intensity to every frame. She is drawn to editorial storytelling and slow, painterly light."],
+["Alexander Voss","1506794778202-cad84cf45f1d",188,"Chest",102,81,97,44,"Black","Blue","Style is a way to say who you are without having to speak.","A former architecture student, Alexander treats each shoot like a structure to be built: precise, considered, unhurried. Campaign and runway are equally his ground."],
+["Sofia Laurent","1524504388940-b1c1722653e1",178,"Bust",84,64,90,40,"Blonde","Blue","Fashion is the armor to survive the reality of everyday life.","Sofia's calm, luminous presence made her a favourite of beauty and fragrance houses. She moves between Paris and Copenhagen for the season."],
+["Marcus Chen","1488426862026-3ee34a7d66df",185,"Chest",99,79,94,43,"Black","Brown","Confidence is what you have before you understand the problem.","Marcus carries a relaxed confidence that reads instantly on camera. He is best known for tailoring campaigns and fashion film."],
+["Elena Rossi","1531746020798-e6953c6e8e04",180,"Bust",86,61,89,39,"Brunette","Hazel","Beauty begins the moment you decide to be yourself.","Elena grew up between Milan and Rome, and it shows in the drama she gives a plain white shirt. She is most at home in long-form magazine stories."],
+["James Blackwood","1507003211169-0a1dd7228f2d",191,"Chest",104,84,99,45,"Brown","Green","Dress like you're already famous.","Tall, still and impossible to ignore, James anchors runway shows for emerging and established houses alike."],
+["Victoria Sterling","1496440737103-cd596325d314",175,"Bust",83,63,87,38,"Red","Green","Fashions fade, style is eternal.","Victoria's red hair became her signature after a single editorial. She is now a regular in lookbooks and print campaigns."],
+["Sebastian Wolf","1500648767791-00dcc994a43e",186,"Chest",100,80,95,44,"Blonde","Blue","Simplicity is the ultimate sophistication.","Sebastian favours quiet, pared-back work. He is often cast for minimalist collections and outdoor editorials."],
+["Amara Okafor","1517841905240-472988babdf9",182,"Bust",85,65,91,41,"Black","Brown","Elegance is when the inside is as beautiful as the outside.","Amara commands a room before she has said a word. Her work spans couture runway, beauty and portrait editorials."]
+];
+const roman=n=>['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV'][n]||n;
+const N=M.length,cols=Math.ceil(Math.sqrt(N));
+
+/* spread 0 = cover (collage of every model + contents). spread k = model k: photo left, text right. */
+const L=(i,c='')=>{
+  if(i===0)return `<div class="pg img ${c}"><div class="mosaic" style="grid-template-columns:repeat(${cols},1fr)">${M.map(m=>`<img src="${U(m[1])}" alt="${m[0]}">`).join('')}</div></div>`;
+  const m=M[i-1];
+  return `<div class="pg img ${c}"><img class="ph" src="${U(m[1])}" alt="${m[0]}"><span class="side">Serendipity &middot; The Collection</span><div class="cap"><b>${m[0]}</b><i>Autumn / Winter 2026</i></div><span class="num"><b>${2*i}</b></span></div>`;
+};
+const R=(i,c='')=>{
+  if(i===0)return `<div class="pg cov ${c}"><div class="run"><span>Issue No. 1</span><span>Autumn / Winter 2026</span></div><h3>Serendipity</h3><div class="sc">The Collection</div><div class="in">In this issue</div><ul class="toc" ${N>10?'style="columns:2;column-gap:2em"':''}>${M.map((m,k)=>`<li><button data-go="${k+1}"><span class="r">${roman(k+1)}</span><span>${m[0]}</span><span class="d"></span><span>${2*(k+1)+1}</span></button></li>`).join('')}</ul></div>`;
+  const m=M[i-1],p=m[0].split(' ');
+  return `<div class="pg txt ${c}"><div class="run"><span>Serendipity &middot; The Faces</span><span>Chapter ${roman(i)}</span></div><h3 class="nm"><span class="a">${p[0]}</span><span class="b">${p.slice(1).join(' ')}</span></h3><p class="bio">${m[11]}</p><p class="pull">&ldquo;${m[10]}&rdquo;</p><div class="facts"><div class="big"><div>${m[2]}<small>Height cm</small></div><div>${m[4]}<small>${m[3]}</small></div><div>${m[5]}<small>Waist</small></div><div>${m[6]}<small>Hips</small></div></div><div class="small"><p><span>Shoes</span>${m[7]}</p><p><span>Hair</span>${m[8]}</p><p><span>Eyes</span>${m[9]}</p></div></div><span class="num"><b>${2*i+1}</b>Serendipity</span></div>`;
+};
+
+const sp=document.getElementById('spread'),counter=document.getElementById('counter');
+const prev=document.getElementById('prev'),next=document.getElementById('next');
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const single=()=>matchMedia('(max-width:980px)').matches;
+let i=0,busy=false;
+
+function draw(){
+  sp.innerHTML=L(i)+R(i);
+  counter.textContent=i===0?'Cover':`${M[i-1][0]} \u00b7 pages ${2*i}\u2013${2*i+1}`;
+  prev.disabled=i===0;next.disabled=i===N;
+}
+function turn(d){
+  const j=i+d;
+  if(busy||j<0||j>N)return;
+  if(single()||reduce){i=j;draw();return}
+  busy=true;
+  const f=document.createElement('div');
+  if(d>0){f.className='flap r';f.innerHTML=R(i)+L(j,'back');sp.children[1].outerHTML=R(j)}
+  else{f.className='flap l';f.innerHTML=L(i)+R(j,'back');sp.children[0].outerHTML=L(j)}
+  sp.appendChild(f);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>f.classList.add('go')));
+  setTimeout(()=>{f.remove();i=j;draw();busy=false},950);
+}
+function go(j){
+  if(busy||j===i||j<0||j>N)return;
+  Math.abs(j-i)===1?turn(j-i):(i=j,draw());
+}
+prev.addEventListener('click',()=>turn(-1));
+next.addEventListener('click',()=>turn(1));
+sp.addEventListener('click',e=>{
+  const t=e.target.closest('[data-go]');
+  if(t){go(+t.dataset.go);return}
+  if(single())return;
+  const r=sp.getBoundingClientRect(),x=(e.clientX-r.left)/r.width;
+  if(x>.85)turn(1);else if(x<.15)turn(-1);
+});
+/* arrow keys only while the book is on screen, so scrolling is never blocked */
+addEventListener('keydown',e=>{
+  if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
+  const r=sp.getBoundingClientRect();
+  if(r.bottom<0||r.top>innerHeight)return;
+  turn(e.key==='ArrowRight'?1:-1);
+});
+let sx=null,sy=null;
+sp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+sp.addEventListener('touchend',e=>{
+  if(sx===null)return;
+  const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+  if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)turn(dx<0?1:-1);
+  sx=sy=null;
+},{passive:true});
+draw();
+
+/* cursor */
+if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+  const root=document.documentElement,cursor=document.querySelector('.cursor'),dot=document.querySelector('.cursor-dot');
+  root.classList.add('fine');
+  let mx=0,my=0,cx=0,cy=0,hov=false;
+  addEventListener('mousemove',e=>{
+    if(!root.classList.contains('cur-on')){cx=mx=e.clientX;cy=my=e.clientY;root.classList.add('cur-on')}
+    mx=e.clientX;my=e.clientY;
+    dot.style.left=mx+'px';dot.style.top=my+'px';
+    let h=!!e.target.closest('a,button,label,input,select,textarea,.apply-btn');
+    const r=sp.getBoundingClientRect();
+    if(!h&&mx>=r.left&&mx<=r.right&&my>=r.top&&my<=r.bottom){
+      const x=(mx-r.left)/r.width;
+      h=(x>.85&&!next.disabled)||(x<.15&&!prev.disabled);
+    }
+    if(h!==hov){hov=h;cursor.style.transform=h?'scale(1.9)':'scale(1)';cursor.style.background=h?'rgba(139,42,62,.22)':'transparent'}
+  });
+  document.addEventListener('mouseleave',()=>root.classList.remove('cur-on'));
+  (function loop(){
+    cx+=(mx-cx)*(reduce?1:.12);cy+=(my-cy)*(reduce?1:.12);
+    cursor.style.left=cx+'px';cursor.style.top=cy+'px';
+    requestAnimationFrame(loop);
+  })();
+}
+
+/* hero parallax */
+const heroImages=document.querySelectorAll('.hero-img');
+document.addEventListener('mousemove',e=>{
+  const x=(e.clientX/innerWidth-.5)*2,y=(e.clientY/innerHeight-.5)*2;
+  heroImages.forEach((img,k)=>{const s=(k+1)*10;img.style.transform=`translate(${x*s}px,${y*s}px)`});
+});
+
+/* about: tiny photo strip that scrolls like a line of text */
+(function(){
+  const track=document.getElementById('track'),w=44;
+  const count=Math.ceil(Math.max(innerWidth,screen.width)/w)+2;
+  const seq=Array.from({length:count},(_,k)=>`<img src="${U(M[k%N][1]).replace('w=800','w=120')}" alt="">`).join('');
+  track.innerHTML=seq+seq;
+})();
+
+/* application form */
+const FORM_ENDPOINT=''; /* paste a form-service URL (e.g. Formspree) to receive submissions */
+(function(){
+  const form=document.getElementById('appForm'),drop=document.getElementById('drop'),photo=document.getElementById('photo');
+  const img=document.getElementById('upImg'),cap=document.getElementById('upCap'),chg=document.getElementById('chg');
+  const nameIn=document.getElementById('fn'),capName=document.getElementById('capName'),note=document.getElementById('note');
+  function showPhoto(f){
+    if(!f||!f.type.startsWith('image/'))return;
+    img.src=URL.createObjectURL(f);img.hidden=false;cap.hidden=false;chg.hidden=false;
+    drop.classList.add('has');note.textContent='';
+  }
+  photo.addEventListener('change',()=>showPhoto(photo.files[0]));
+  ['dragenter','dragover'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add('drag')}));
+  ['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove('drag')}));
+  drop.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f){photo.files=e.dataTransfer.files;showPhoto(f)}});
+  nameIn.addEventListener('input',()=>{capName.textContent=nameIn.value.trim()||'Your name'});
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    if(!photo.files.length){note.textContent='Please add a photograph on the left page.';return}
+    const done=()=>{
+      form.querySelector('.fm').innerHTML='<div class="run"><span>Serendipity &middot; Application</span><span>Received</span></div><h3 class="nm"><span class="a">Thank</span><span class="b">you</span></h3><p class="bio">Your application is with our scouting team. If your look is right for the house, we will write to the email you gave us.</p>';
+    };
+    if(!FORM_ENDPOINT){done();return}
+    try{
+      const r=await fetch(FORM_ENDPOINT,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+      r.ok?done():note.textContent='Something went wrong. Please try again.';
+    }catch(err){note.textContent='Something went wrong. Please try again.'}
+  });
+})();
+
+/* contact: pick models, send booking request */
+(function(){
+  const chips=document.getElementById('chips'),form=document.getElementById('hireForm'),note=document.getElementById('hnote');
+  chips.innerHTML=M.map(m=>`<label class="chip"><input type="checkbox" name="models" value="${m[0]}"><img src="${U(m[1]).replace('w=800','w=120')}" alt=""><span>${m[0]}</span></label>`).join('');
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const done=()=>{form.innerHTML='<div><h2 style="font-size:3.4rem;font-weight:300;letter-spacing:-1px;line-height:1.1">Thank <span style="font-family:\'Dancing Script\',cursive;color:var(--burgundy-light)">you</span></h2><p class="lead" style="margin-top:1rem">Your booking request is with our desk. We will write to you within one working day.</p></div>'};
+    if(!FORM_ENDPOINT){done();return}
+    try{
+      const r=await fetch(FORM_ENDPOINT,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+      r.ok?done():note.textContent='Something went wrong. Please try again.';
+    }catch(err){note.textContent='Something went wrong. Please try again.'}
+  });
+})();
+
+/* footer: "Serendipity" is written out as you scroll into the footer */
+(function(){
+  const foot=document.getElementById('foot'),ink=document.getElementById('ink'),pen=document.getElementById('pen');
+  if(reduce){ink.style.setProperty('--w','110%');return}
+  function upd(){
+    const r=foot.getBoundingClientRect();
+    const p=Math.max(0,Math.min(1,(innerHeight-r.top)/(Math.min(r.height,innerHeight)*.9)));
+    ink.style.setProperty('--w',(p*110)+'%');
+    const ir=ink.getBoundingClientRect(),wr=ink.parentNode.getBoundingClientRect();
+    pen.style.transform=`translate(${(ir.left-wr.left)+ir.width*p}px,${ir.height*.62+Math.sin(p*60)*ir.height*.12}px)`;
+    pen.style.opacity=(p>0&&p<.98)?1:0;
+  }
+  addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();
+})();
+
+/* reveal on scroll */
+const io=new IntersectionObserver(es=>es.forEach(en=>{
+  if(en.isIntersecting){en.target.style.opacity='1';en.target.style.transform='translateY(0)'}
+}),{threshold:.1,rootMargin:'0px 0px -100px 0px'});
+document.querySelectorAll('.about-intro,.about-outro,.section-title').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(50px)';
+  el.style.transition='opacity .8s ease,transform .8s ease';io.observe(el);
+});
+</script>
+</body>
+</html>
