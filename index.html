@@ -206,6 +206,35 @@ footer{padding:5rem 4rem 3rem;text-align:center;border-top:1px solid rgba(245,24
   nav{padding:1rem 2rem}.nav-links{gap:1.5rem}
 }
 @media(prefers-reduced-motion:reduce){.track{animation:none}.flap{transition-duration:.01s}html{scroll-behavior:auto}}
+/* ===== mobile polish ===== */
+html{-webkit-text-size-adjust:100%}
+.spread{scroll-margin-top:84px}
+@media(max-width:980px){
+  .hero{height:100vh;height:100dvh}
+  #prev,#next,.counter{position:sticky;bottom:12px;z-index:30;background:rgba(10,10,10,.92)}
+  .counter{display:flex;align-items:center;justify-content:center;padding:0 .5rem;font-size:.85rem;letter-spacing:1px;text-align:center}
+  .big small{letter-spacing:1.5px}
+  .f,.f input{font-size:16px}
+  .desk li{flex-wrap:wrap}
+}
+@media(max-width:768px){
+  .section{padding:5rem 1.5rem}
+  .strip{margin:1.2rem -1.5rem}
+  .hero-title{font-size:clamp(2.8rem,14vw,4rem);letter-spacing:-2px}
+  .hero-img-1{width:55vw;height:75vw;right:8%}
+  .hero-img-2{width:48vw;height:64vw}
+  .hero-img-3{width:40vw;height:55vw;right:38%}
+  .about-intro,.about-outro{font-size:1.1rem}
+  footer{padding:4rem 1.5rem 2.5rem}
+  .write{font-size:clamp(2.6rem,15vw,6rem)}
+}
+@media(max-width:480px){
+  nav{padding:.9rem 1rem}
+  .logo{font-size:1.5rem}
+  .nav-links{gap:.8rem}
+  .nav-links a{font-size:.62rem;letter-spacing:1px}
+}
+@media(hover:none){.nav-arrow:hover:not(:disabled){background:rgba(10,10,10,.92);color:var(--white)}}
 </style>
 </head>
 <body>
@@ -367,6 +396,7 @@ const sp=document.getElementById('spread'),counter=document.getElementById('coun
 const prev=document.getElementById('prev'),next=document.getElementById('next');
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const single=()=>matchMedia('(max-width:980px)').matches;
+function keep(){const r=sp.getBoundingClientRect();if(r.top<70)sp.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}
 let i=0,busy=false;
 
 function draw(){
@@ -377,7 +407,7 @@ function draw(){
 function turn(d){
   const j=i+d;
   if(busy||j<0||j>N)return;
-  if(single()||reduce){i=j;draw();return}
+  if(single()||reduce){i=j;draw();if(single())keep();return}
   busy=true;
   const f=document.createElement('div');
   if(d>0){f.className='flap r';f.innerHTML=R(i)+L(j,'back');sp.children[1].outerHTML=R(j)}
@@ -388,7 +418,7 @@ function turn(d){
 }
 function go(j){
   if(busy||j===i||j<0||j>N)return;
-  Math.abs(j-i)===1?turn(j-i):(i=j,draw());
+  Math.abs(j-i)===1?turn(j-i):(i=j,draw(),single()&&keep());
 }
 prev.addEventListener('click',()=>turn(-1));
 next.addEventListener('click',()=>turn(1));
